@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""meshd: mesh daemon substrate (scaffold)."""
+
+from __future__ import annotations
+
+import argparse
+import sys
+
+
+def cmd_daemon(_: argparse.Namespace) -> int:
+    print("meshd daemon scaffold: not implemented yet", file=sys.stderr)
+    return 2
+
+
+def cmd_handle_event(_: argparse.Namespace) -> int:
+    print("meshd handle-event scaffold: not implemented yet", file=sys.stderr)
+    return 2
+
+
+def cmd_run_profile(_: argparse.Namespace) -> int:
+    print("meshd run-profile scaffold: not implemented yet", file=sys.stderr)
+    return 2
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    p_daemon = sub.add_parser("daemon", help="Run mesh daemon loop")
+    p_daemon.set_defaults(func=cmd_daemon)
+
+    p_event = sub.add_parser("handle-event", help="Handle one JSON event")
+    p_event.add_argument("--event", required=False, default="")
+    p_event.set_defaults(func=cmd_handle_event)
+
+    p_run = sub.add_parser("run-profile", help="Run named profile")
+    p_run.add_argument("profile", nargs="?")
+    p_run.set_defaults(func=cmd_run_profile)
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

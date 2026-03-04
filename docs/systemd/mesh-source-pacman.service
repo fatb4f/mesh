@@ -1,0 +1,6 @@
+[Unit]
+Description=Mesh source ingest: pacman log
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/meshctl event ingest-pacman --pacman-log /var/log/pacman.log

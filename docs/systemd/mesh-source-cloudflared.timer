@@ -1,0 +1,11 @@
+[Unit]
+Description=Mesh source ingest timer: cloudflared journal
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+Persistent=true
+Unit=mesh-source-cloudflared.service
+
+[Install]
+WantedBy=timers.target

@@ -14,7 +14,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, ValidationError
 
-from mesh.runtime_context import cache_root, config_root, state_root
+from mesh.runtime_context import config_root, state_root
 from mesh.ssot.validate import validate_or_raise
 
 try:
@@ -109,7 +109,11 @@ def _atomic_write_text(path: Path, content: str) -> None:
 
 
 def _event_envelope(
-    *, topic: str, payload: dict[str, Any], request_id: str | None = None, run_id: str | None = None
+    *,
+    topic: str,
+    payload: dict[str, Any],
+    request_id: str | None = None,
+    run_id: str | None = None,
 ) -> dict[str, Any]:
     row = {
         "schema_name": "event.envelope",
@@ -152,7 +156,9 @@ def daemon_run(config: Path, router_log: str = "") -> int:
     return 0
 
 
-def handle_event(config: Path, event: str = "", stdin: bool = False, router_log: str = "") -> int:
+def handle_event(
+    config: Path, event: str = "", stdin: bool = False, router_log: str = ""
+) -> int:
     cfg = load_config(config)
     log_path = Path(router_log or cfg["runtime"]["router_log"]).expanduser()
 
@@ -170,13 +176,22 @@ def handle_event(config: Path, event: str = "", stdin: bool = False, router_log:
         except json.JSONDecodeError:
             event_data = {"raw": event, "invalid_json": True}
 
-    payload = {
-        "kind": "mesh.event.ingested",
-        "status": "ok",
-        "data": event_data,
-    }
+    topic = "mesh.event.ingested"
+    payload: dict[str, Any]
+    if isinstance(event_data, dict) and isinstance(event_data.get("payload"), dict):
+        payload = event_data["payload"]
+        maybe_topic = event_data.get("topic")
+        if isinstance(maybe_topic, str) and maybe_topic.strip():
+            topic = maybe_topic.strip()
+    else:
+        payload = {
+            "kind": "mesh.event.ingested",
+            "status": "ok",
+            "data": event_data,
+        }
+
     validate_or_raise("mesh.signal", payload)
-    _write_jsonl(log_path, _event_envelope(topic="mesh.event.ingested", payload=payload))
+    _write_jsonl(log_path, _event_envelope(topic=topic, payload=payload))
     return 0
 
 
@@ -208,7 +223,9 @@ def _build_parser() -> argparse.ArgumentParser:
     p_daemon = sub.add_parser("daemon", help="Run mesh daemon loop")
     p_daemon.add_argument("--config", default=str(default_config_path()))
     p_daemon.add_argument("--router-log", default="")
-    p_daemon.set_defaults(func=lambda a: daemon_run(Path(a.config).expanduser(), a.router_log))
+    p_daemon.set_defaults(
+        func=lambda a: daemon_run(Path(a.config).expanduser(), a.router_log)
+    )
 
     p_event = sub.add_parser("handle-event", help="Handle one JSON event")
     p_event.add_argument("--config", default=str(default_config_path()))
@@ -216,7 +233,9 @@ def _build_parser() -> argparse.ArgumentParser:
     p_event.add_argument("--stdin", action="store_true")
     p_event.add_argument("--router-log", default="")
     p_event.set_defaults(
-        func=lambda a: handle_event(Path(a.config).expanduser(), a.event, a.stdin, a.router_log)
+        func=lambda a: handle_event(
+            Path(a.config).expanduser(), a.event, a.stdin, a.router_log
+        )
     )
 
     p_run = sub.add_parser("run-profile", help="Run named profile")
@@ -224,7 +243,9 @@ def _build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--config", default=str(default_config_path()))
     p_run.add_argument("--profile-log", default="")
     p_run.set_defaults(
-        func=lambda a: run_profile(Path(a.config).expanduser(), a.profile, a.profile_log)
+        func=lambda a: run_profile(
+            Path(a.config).expanduser(), a.profile, a.profile_log
+        )
     )
 
     p_write = sub.add_parser("write-config", help="Write default meshd config")

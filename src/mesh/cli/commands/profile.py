@@ -17,4 +17,8 @@ def run(
     config: str = typer.Option(str(service.default_config_path()), "--config"),
     profile_log: str = typer.Option("", "--profile-log"),
 ) -> None:
-    raise typer.Exit(service.run_profile(Path(config).expanduser(), profile=profile, profile_log=profile_log))
+    raise typer.Exit(
+        service.run_profile(
+            Path(config).expanduser(), profile=profile, profile_log=profile_log
+        )
+    )

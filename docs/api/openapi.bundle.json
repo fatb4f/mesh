@@ -1,0 +1,264 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "mesh control and event contracts",
+    "version": "0.1.0",
+    "description": "Derived OpenAPI component catalog for mesh contracts."
+  },
+  "servers": [],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "EventEnvelope": {
+        "$id": "mesh/event.envelope.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "EventEnvelope",
+        "description": "Canonical envelope for persisted mesh events crossing systemd unit boundaries.",
+        "type": "object",
+        "required": [
+          "schema_name",
+          "schema_version",
+          "event_id",
+          "ts",
+          "topic",
+          "source",
+          "payload"
+        ],
+        "properties": {
+          "schema_name": {
+            "const": "event.envelope"
+          },
+          "schema_version": {
+            "const": "v1"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "dedupe_key": {
+            "type": "string"
+          },
+          "ts": {
+            "type": "string",
+            "minLength": 1
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "payload": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      },
+      "MeshSignal": {
+        "$id": "mesh/mesh.signal.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "MeshSignal",
+        "description": "Normalized mesh signal payload emitted by source adapters and runtime actions.",
+        "type": "object",
+        "required": [
+          "kind",
+          "status"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "warn",
+              "error",
+              "scaffold"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": [
+              "object",
+              "array",
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "ProfileRun": {
+        "$id": "mesh/profile.run.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ProfileRun",
+        "description": "Profile execution decision payload for allow/block outcome tracking.",
+        "type": "object",
+        "required": [
+          "profile",
+          "allowed",
+          "status"
+        ],
+        "properties": {
+          "profile": {
+            "type": "string"
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scaffold",
+              "pass",
+              "fail",
+              "blocked"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "event.envelope.schema": {
+        "$id": "mesh/event.envelope.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "EventEnvelope",
+        "description": "Canonical envelope for persisted mesh events crossing systemd unit boundaries.",
+        "type": "object",
+        "required": [
+          "schema_name",
+          "schema_version",
+          "event_id",
+          "ts",
+          "topic",
+          "source",
+          "payload"
+        ],
+        "properties": {
+          "schema_name": {
+            "const": "event.envelope"
+          },
+          "schema_version": {
+            "const": "v1"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "dedupe_key": {
+            "type": "string"
+          },
+          "ts": {
+            "type": "string",
+            "minLength": 1
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "payload": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      },
+      "mesh.signal.schema": {
+        "$id": "mesh/mesh.signal.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "MeshSignal",
+        "description": "Normalized mesh signal payload emitted by source adapters and runtime actions.",
+        "type": "object",
+        "required": [
+          "kind",
+          "status"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "warn",
+              "error",
+              "scaffold"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": [
+              "object",
+              "array",
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "profile.run.schema": {
+        "$id": "mesh/profile.run.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ProfileRun",
+        "description": "Profile execution decision payload for allow/block outcome tracking.",
+        "type": "object",
+        "required": [
+          "profile",
+          "allowed",
+          "status"
+        ],
+        "properties": {
+          "profile": {
+            "type": "string"
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scaffold",
+              "pass",
+              "fail",
+              "blocked"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "x-derived-from": [
+    "src/mesh/ssot/schemas/schema.index.json",
+    "api/proto/mesh/v1/mesh_control.proto"
+  ]
+}

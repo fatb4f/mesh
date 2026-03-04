@@ -6,10 +6,12 @@ import os
 from pathlib import Path
 
 try:
+    from xdg_base_dirs import xdg_data_home as _xdg_data_home_fn
     from xdg_base_dirs import xdg_cache_home as _xdg_cache_home_fn
     from xdg_base_dirs import xdg_config_home as _xdg_config_home_fn
     from xdg_base_dirs import xdg_state_home as _xdg_state_home_fn
 except ImportError:  # pragma: no cover
+    _xdg_data_home_fn = None
     _xdg_cache_home_fn = None
     _xdg_config_home_fn = None
     _xdg_state_home_fn = None
@@ -41,6 +43,19 @@ def xdg_config_home() -> Path:
     if _xdg_config_home_fn is not None:
         return _xdg_config_home_fn()
     return Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
+
+
+def xdg_data_home() -> Path:
+    if _xdg_data_home_fn is not None:
+        return _xdg_data_home_fn()
+    return Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
+
+
+def xdg_bin_home() -> Path:
+    value = os.environ.get("XDG_BIN_HOME", "").strip()
+    if value:
+        return Path(value).expanduser()
+    return xdg_data_home() / "bin"
 
 
 def state_root() -> Path:

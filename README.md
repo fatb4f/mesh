@@ -27,14 +27,16 @@ Generate default daemon config (optional):
 ## Install (packaged)
 ```bash
 cd ~/src/mesh
-uv pip install --system -e .
+./scripts/install_xdg_bin.sh
 ```
 
-Installed console commands:
-- `meshd`
-- `meshctl`
+Installed console commands (linked to XDG bin):
+- `${XDG_BIN_HOME:-$HOME/.local/share/bin}/meshd`
+- `${XDG_BIN_HOME:-$HOME/.local/share/bin}/meshctl`
 
 Package source lives under `src/mesh/`.
+
+If your shell PATH does not include `${XDG_BIN_HOME:-$HOME/.local/share/bin}`, add it.
 
 ## SSOT schema tools
 - List schemas:
@@ -49,7 +51,19 @@ Package source lives under `src/mesh/`.
 ## Current command surface
 - `meshctl daemon run`
 - `meshctl event handle`
+- `meshctl event ingest-cloudflared`
+- `meshctl event ingest-pacman`
 - `meshctl profile run`
+
+## Initial source adapters
+- Cloudflared tunnel events from journald:
+  - `meshctl event ingest-cloudflared --scope user --unit cloudflared.service`
+- Pacman ALPM events from `/var/log/pacman.log`:
+  - `meshctl event ingest-pacman --pacman-log /var/log/pacman.log`
+
+Both adapters are incremental and store cursors under:
+- `~/.local/state/mesh/sources/cloudflared.cursor.json`
+- `~/.local/state/mesh/sources/pacman.cursor.json`
 
 ## Optional dependencies
 - `xdg-base-dirs` (`python-xdg-base-dirs`) for strict XDG path resolution.
@@ -72,3 +86,8 @@ This repo follows `fabric-docs/docs/FABRIC_MUST_RULES.md` and `fabric-docs/docs/
 
 ## Documentation
 Shared standards and architecture live in `fabric-docs`.
+
+API specs + derived docs:
+- OpenAPI 3.1 root: `api/openapi/openapi.yaml`
+- Proto root: `api/proto/mesh/v1/mesh_control.proto`
+- Redocly-derived docs: `docs/api/`

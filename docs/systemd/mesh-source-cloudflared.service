@@ -1,0 +1,7 @@
+[Unit]
+Description=Mesh source ingest: cloudflared journal
+After=cloudflared.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/meshctl event ingest-cloudflared --scope user --unit cloudflared.service

@@ -4,6 +4,7 @@
 - `meshd` is the daemon substrate.
 - `meshctl` is a thin CLI over core service functions.
 - `ssot` validates persisted envelopes and payloads.
+- `runtime.sources` contains incremental source adapters (cloudflared, pacman).
 
 ## Dependency policy
 Core runtime dependencies mirror spawn patterns:
@@ -16,3 +17,5 @@ Core runtime dependencies mirror spawn patterns:
 ## SSOT policy
 - JSON Schema governs cross-unit persisted payloads.
 - Required schemas are indexed in `src/mesh/ssot/schemas/schema.index.json`.
+- OpenAPI 3.1 is derived from exported schemas (`api/openapi/openapi.yaml`).
+- API docs are derived by Redocly bundle + docs render (`docs/api/*`).

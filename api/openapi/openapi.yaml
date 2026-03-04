@@ -1,0 +1,18 @@
+openapi: 3.1.0
+info:
+  title: mesh control and event contracts
+  version: 0.1.0
+  description: Derived OpenAPI component catalog for mesh contracts.
+servers: []
+paths: {}
+components:
+  schemas:
+    EventEnvelope:
+      $ref: ./schemas/event.envelope.schema.json
+    MeshSignal:
+      $ref: ./schemas/mesh.signal.schema.json
+    ProfileRun:
+      $ref: ./schemas/profile.run.schema.json
+x-derived-from:
+  - src/mesh/ssot/schemas/schema.index.json
+  - api/proto/mesh/v1/mesh_control.proto

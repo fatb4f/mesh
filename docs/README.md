@@ -6,3 +6,5 @@ Shared cross-repo docs are maintained in `fabric-docs`.
 ## Documents
 - `SYSTEMD_EVENT_MODEL.md`: mesh systemd-first runtime model.
 - `TOOL_ARCHITECTURE_AND_DEPENDENCIES.md`: boundaries, dependencies, and SSOT schema policy.
+- `api/README.md`: generated API schema docs (OpenAPI + SSOT registry).
+- `systemd/*.service` and `systemd/*.timer`: source-ingest unit templates.

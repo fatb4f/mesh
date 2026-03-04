@@ -1,0 +1,11 @@
+{
+  "$id": "mesh/schema.index.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_name": "schema.index",
+  "schema_version": "v1",
+  "schemas": {
+    "event.envelope": { "path": "event.envelope.schema.json" },
+    "mesh.signal": { "path": "mesh.signal.schema.json" },
+    "profile.run": { "path": "profile.run.schema.json" }
+  }
+}

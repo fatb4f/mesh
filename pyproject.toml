@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mesh"
+version = "0.1.0"
+description = "Mesh daemon + CLI substrate"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "dataconfy>=0.0.1",
+  "pydantic>=2",
+  "xdg-base-dirs>=6",
+  "typer>=0.24.1",
+  "rich>=14.3.3",
+  "jsonschema>=4.26.0",
+]
+
+[project.scripts]
+meshd = "mesh.core.service:main"
+meshctl = "mesh.cli.app:main"
+
+[dependency-groups]
+dev = [
+  "ruff>=0.13.1",
+  "mypy>=1.18.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mesh"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/mesh"]
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true

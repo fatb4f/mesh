@@ -1,0 +1,13 @@
+{
+  "$id": "mesh/profile.run.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProfileRun",
+  "type": "object",
+  "required": ["profile", "allowed", "status"],
+  "properties": {
+    "profile": { "type": "string" },
+    "allowed": { "type": "boolean" },
+    "status": { "type": "string", "enum": ["scaffold", "pass", "fail", "blocked"] }
+  },
+  "additionalProperties": true
+}

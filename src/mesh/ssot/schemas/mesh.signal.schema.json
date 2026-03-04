@@ -1,0 +1,14 @@
+{
+  "$id": "mesh/mesh.signal.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MeshSignal",
+  "type": "object",
+  "required": ["kind", "status"],
+  "properties": {
+    "kind": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["ok", "warn", "error", "scaffold"] },
+    "message": { "type": "string" },
+    "data": { "type": ["object", "array", "string", "number", "boolean", "null"] }
+  },
+  "additionalProperties": true
+}
